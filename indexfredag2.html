@@ -20,15 +20,18 @@
             color: white;
             font-size: 2rem;
             font-family: Arial, sans-serif;
-            background-size: cover;
-            background-position: center;
+            background-size: 120%; /* Baggrunden er større end synsfeltet */
+            background-position: center; /* Centrer baggrunden */
             background-attachment: fixed; /* Gør baggrunden fast */
         }
 
         #content {
-            position: relative; /* Holder alt indhold ovenpå baggrunden */
+            position: relative;
             text-align: center;
-            z-index: 1; /* Sørger for, at indholdet er synligt */
+            z-index: 1;
+            padding: 20px; /* Gør lidt plads mellem kanten af indholdet og baggrunden */
+            background: rgba(0, 0, 0, 0.5); /* Halvgennemsigtig baggrund for at forbedre kontrast */
+            border-radius: 15px; /* Rundede hjørner */
         }
 
         #message {
