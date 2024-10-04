@@ -29,9 +29,12 @@
             position: relative;
             text-align: center;
             z-index: 1;
-            padding: 20px; /* Gør lidt plads mellem kanten af indholdet og baggrunden */
-            background: rgba(0, 0, 0, 0.5); /* Halvgennemsigtig baggrund for at forbedre kontrast */
+            padding: 20px; /* Giver lidt luft omkring indholdet */
+            background: rgba(0, 0, 0, 0.5); /* Halvgennemsigtig baggrund */
             border-radius: 15px; /* Rundede hjørner */
+            max-width: 600px; /* Maksimal bredde på indholdet */
+            max-height: 80vh; /* Indholdets maksimale højde */
+            margin: auto; /* Sørger for, at det forbliver centreret */
         }
 
         #message {
