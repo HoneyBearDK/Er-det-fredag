@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Er det fredag?</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: white;
+            font-size: 2rem;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background-size: cover;
+            background-position: center;
+        }
+
+        #message {
+            margin-bottom: 20px;
+        }
+
+        #timer {
+            font-size: 1.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div id="message"></div>
+    <div id="timer"></div>
+
+    <script>
+        // Fredags- og ikke-fredagsbilleder
+        const fredagBilleder = [
+            'fredag-billede1.jpg',
+            'fredag-billede2.jpg',
+            'fredag-billede3.jpg'
+        ];
+
+        const ikkeFredagBilleder = [
+            'ikke-fredag-billede1.jpg',
+            'ikke-fredag-billede2.jpg',
+            'ikke-fredag-billede3.jpg'
+        ];
+
+        // Vælger et tilfældigt billede fra en given liste
+        function getRandomImage(images) {
+            const randomIndex = Math.floor(Math.random() * images.length);
+            return images[randomIndex];
+        }
+
+        function checkIfFriday() {
+            const today = new Date();
+            const dayOfWeek = today.getDay(); // 0 = søndag, 1 = mandag, ..., 5 = fredag
+
+            const messageElement = document.getElementById('message');
+            const timerElement = document.getElementById('timer');
+
+            if (dayOfWeek === 5) { // Hvis det er fredag
+                const randomFredagBillede = getRandomImage(fredagBilleder);
+                document.body.style.backgroundImage = `url('${randomFredagBillede}')`;
+                messageElement.innerText = "Det er fredag! 🎉";
+                startCountdownToMidnight(); // Start nedtællingen til slutningen af fredag
+            } else {
+                const randomIkkeFredagBillede = getRandomImage(ikkeFredagBilleder);
+                document.body.style.backgroundImage = `url('${randomIkkeFredagBillede}')`;
+                messageElement.innerText = "Det er ikke fredag endnu. 😔";
+                startCountdownToFriday();
+            }
+        }
+
+        // Nedtælling til næste fredag
+        function startCountdownToFriday() {
+            const today = new Date();
+            const dayOfWeek = today.getDay();
+            let daysUntilFriday = 5 - dayOfWeek;
+
+            if (daysUntilFriday < 0) {
+                daysUntilFriday += 7;
+            }
+
+            const nextFriday = new Date(today.getFullYear(), today.getMonth(), today.getDate() + daysUntilFriday, 0, 0, 0, 0); // Næste fredag kl. 00:00
+
+            function updateTimer() {
+                const now = new Date();
+                const timeUntilFriday = nextFriday - now;
+
+                const days = Math.floor(timeUntilFriday / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((timeUntilFriday % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((timeUntilFriday % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((timeUntilFriday % (1000 * 60)) / 1000);
+
+                const timerElement = document.getElementById('timer');
+                timerElement.innerText = `Tid til det er fredag: ${days} dage, ${hours} timer, ${minutes} minutter, ${seconds} sekunder`;
+
+                if (timeUntilFriday <= 0) {
+                    clearInterval(timerInterval);
+                    timerElement.innerText = "Det er fredag nu! 🎉";
+                }
+            }
+
+            updateTimer(); // Kør med det samme
+            const timerInterval = setInterval(updateTimer, 1000); // Opdater hvert sekund
+        }
+
+        // Nedtælling til slutningen af fredag (midnat)
+        function startCountdownToMidnight() {
+            const today = new Date();
+            const midnight = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1, 0, 0, 0, 0); // Næste midnat
+
+            function updateTimer() {
+                const now = new Date();
+                const timeUntilMidnight = midnight - now;
+
+                const hours = Math.floor((timeUntilMidnight % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((timeUntilMidnight % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((timeUntilMidnight % (1000 * 60)) / 1000);
+
+                const timerElement = document.getElementById('timer');
+                timerElement.innerText = `Fredag slutter om: ${hours} timer, ${minutes} minutter, ${seconds} sekunder`;
+
+                if (timeUntilMidnight <= 0) {
+                    clearInterval(timerInterval);
+                    timerElement.innerText = "Fredag er slut! 😔";
+                }
+            }
+
+            updateTimer(); // Kør med det samme
+            const timerInterval = setInterval(updateTimer, 1000); // Opdater hvert sekund
+        }
+
+        checkIfFriday();
+    </script>
+</body>
+</html>
